@@ -29,7 +29,7 @@
         fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/AT_Irapuato.geojson')
             .then(response => response.json())  // Convertir a formato JSON
             .then(data => {
-                // Añadir el GeoJSON al mapa con una función de click
+                // Crear la capa GeoJSON
                 var geoJsonLayer = L.geoJSON(data, {
                     onEachFeature: function (feature, layer) {
                         // Verificar si la característica tiene propiedades
@@ -46,8 +46,17 @@
                 // Agregar el plugin de búsqueda
                 var searchControl = new L.Control.Search({
                     layer: geoJsonLayer, // La capa donde buscar
-                    propertyName: 'SECCION', // El atributo que quieres buscar (puede ser 'DISTRITO_F', 'DISTRITO_L', o 'SECCION')
-                    marker: false // Desactivar el marcador en los resultados de búsqueda
+                    propertyName: 'SECCION', // El atributo que quieres buscar
+                    marker: false, // Desactivar el marcador en los resultados de búsqueda
+                    moveToLocation: function(latlng, title, map) {
+                        // Cuando se encuentra la sección, hacer zoom en ella y resaltar el polígono
+                        map.setView(latlng, 14); // Hacer zoom en el polígono
+                        var circle = L.circle(latlng, { radius: 50 }).addTo(map); // Crear un círculo alrededor del polígono encontrado
+                        circle.setStyle({ color: 'red', fillColor: '#f03', fillOpacity: 0.3 }); // Resaltar con color rojo
+                        setTimeout(function () {
+                            map.removeLayer(circle); // Eliminar el círculo después de 3 segundos
+                        }, 3000);
+                    }
                 });
 
                 // Añadir el control de búsqueda al mapa
@@ -59,7 +68,3 @@
     </script>
 </body>
 </html>
-
-
-
-
