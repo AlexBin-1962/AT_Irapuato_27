@@ -39,9 +39,6 @@
                                                "<b>Distrito Local: </b>" + feature.properties.DISTRITO_L + "<br>" +
                                                "<b>Sección: </b>" + feature.properties.SECCION;
                             layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
-
-                            // Agregar etiqueta (tooltip) con el contenido de 'SECCION'
-                            layer.bindTooltip("Sección: " + feature.properties.SECCION, { permanent: true, direction: "center" }).openTooltip();
                         }
                     }
                 }).addTo(map);
