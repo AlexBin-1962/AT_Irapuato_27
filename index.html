@@ -21,12 +21,21 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Cargar el archivo GeoJSON desde GitHub con la URL actualizada
+        // Cargar el archivo GeoJSON desde GitHub
         fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/AT_Irapuato.geojson')
             .then(response => response.json())  // Convertir a formato JSON
             .then(data => {
-                // Añadir el GeoJSON al mapa
-                L.geoJSON(data).addTo(map);
+                // Añadir el GeoJSON al mapa con una función de click
+                L.geoJSON(data, {
+                    onEachFeature: function (feature, layer) {
+                        // Verificar si la característica tiene propiedades
+                        if (feature.properties) {
+                            var popupContent = "<b>" + feature.properties.name + "</b><br>" +
+                                               "Seccion: " + feature.properties.seccion;
+                            layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
+                        }
+                    }
+                }).addTo(map);
             })
             .catch(error => {
                 console.error('Error al cargar el GeoJSON:', error);
@@ -34,4 +43,5 @@
     </script>
 </body>
 </html>
+
 
