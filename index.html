@@ -24,7 +24,18 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-
+		
+		// Cargar el archivo GeoJSON de Etiquetas desde GitHub
+		fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Etiquetas.geojson')
+			.then(response => response.json())
+			.then(data => {
+        // El código para agregar la capa GeoJSON al mapa sigue igual
+		})
+			.catch(error => {
+			console.error('Error al cargar el GeoJSON:', error);
+    });
+	
+	
         // Cargar el archivo GeoJSON desde GitHub
         fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/AT_Irapuato.geojson')
             .then(response => response.json())  // Convertir a formato JSON
