@@ -30,7 +30,7 @@
                     onEachFeature: function (feature, layer) {
                         // Verificar si la característica tiene propiedades
                         if (feature.properties) {
-                            var popupContent = "<b>" + feature.properties.name + "</b><br>" +
+                            var popupContent = "<b>" + feature.properties.MUNICIPIO + "</b><br>" +
                                                "Seccion: " + feature.properties.SECCION;
                             layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
                         }
