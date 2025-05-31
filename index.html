@@ -31,7 +31,7 @@
                         // Verificar si la característica tiene propiedades
                         if (feature.properties) {
                             var popupContent = "<b>" + feature.properties.name + "</b><br>" +
-                                               "Seccion: " + feature.properties.seccion;
+                                               "Seccion: " + feature.properties.SECCION;
                             layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
                         }
                     }
