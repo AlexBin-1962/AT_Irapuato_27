@@ -181,6 +181,18 @@ window.showGraphs = function (seccion) {
 
     // Agregar el contenedor a la ventana modal
     graficaContainer.appendChild(container);
+
+     // Agregar la gráfica de Competencia (columna izquierda)
+    var graficaCompetencia = "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_competencia/competencia_" + seccion + ".png' width='300'><br>";
+
+    // Agregar el texto explicativo de la gráfica de Competencia (columna derecha)
+    var textoCompetencia = "<div style='max-width: 400px;'><p><strong>Explicación Competencia:</strong> Este gráfico compara la competencia entre los partidos en la sección seleccionada durante las últimas tres elecciones.</p></div>";
+
+    // Agregar la gráfica y el texto al contenedor
+    container.innerHTML = graficaCompetencia + textoCompetencia;
+
+    // Agregar el contenedor a la ventana modal
+    graficaContainer.appendChild(container);
 };
 
 
