@@ -51,6 +51,20 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        /* Estilos para las gráficas y el texto explicativo */
+        .graph-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .graph-container img {
+            width: 300px;
+        }
+        .graph-container .description {
+            max-width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -69,20 +83,8 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Datos de la Sección</h2>
-            <table id="tabla-datos">
-                <thead>
-                    <tr>
-                        <th>Sección</th>
-                        <th>Distrito Federal</th>
-                        <th>Distrito Local</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-body">
-                    <!-- Los datos de la tabla se agregarán aquí dinámicamente -->
-                </tbody>
-            </table>
             <div id="grafica-container">
-                <!-- Las gráficas se mostrarán aquí al hacer clic en el botón -->
+                <!-- Las gráficas y explicaciones se mostrarán aquí al hacer clic en el botón -->
             </div>
         </div>
     </div>
@@ -127,62 +129,39 @@
                     }
                 }).addTo(map);
 
-                // Función para buscar y resaltar el polígono
-                document.getElementById('search-button').addEventListener('click', function() {
-                    var searchTerm = document.getElementById('search-input').value; // Número de sección
+                // Función para mostrar las 4 gráficas y los textos explicativos
+                window.showGraphs = function (seccion) {
+                    var graficaContainer = document.getElementById("grafica-container");
 
-                    // Buscar la sección en los datos del GeoJSON
-                    var foundFeature = null;
-                    geoJsonLayer.eachLayer(function(layer) {
-                        if (layer.feature.properties.SECCION == searchTerm) {
-                            foundFeature = layer;
-                        }
-                    });
+                    // Limpiar el contenedor de las gráficas
+                    graficaContainer.innerHTML = "";
 
-                    if (foundFeature) {
-                        // Resaltar el polígono
-                        foundFeature.setStyle({ color: 'red', weight: 5, fillColor: '#f03', fillOpacity: 0.3 });
+                    // Crear contenedor con dos columnas para cada gráfica y su descripción
+                    var container = document.createElement("div");
 
-                        // Hacer zoom en el polígono
-                        map.setView(foundFeature.getBounds().getCenter(), 14);
+                    // Gráfica de Historial
+                    var graficaHistorial = "<div class='graph-container'><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png'><div class='description'><p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div></div>";
+                    container.innerHTML += graficaHistorial;
 
-                        // Mostrar popup
-                        foundFeature.openPopup();
-                    } else {
-                        alert('No se encontró la sección con el número ' + searchTerm);
-                    }
-                });
+                    // Gráfica de Competencia
+                    var graficaCompetencia = "<div class='graph-container'><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_competencia/competencia_" + seccion + ".png'><div class='description'><p><strong>Explicación Competencia:</strong> Este gráfico compara la competencia entre los partidos en la sección seleccionada durante las últimas tres elecciones.</p></div></div>";
+                    container.innerHTML += graficaCompetencia;
+
+                    // Gráfica de Ganadores
+                    var graficaGanadores = "<div class='graph-container'><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_ganadores/ganadores_" + seccion + ".png'><div class='description'><p><strong>Explicación Ganadores:</strong> Este gráfico muestra los ganadores de cada elección en las distintas secciones a través de las elecciones de 2018, 2021 y 2024.</p></div></div>";
+                    container.innerHTML += graficaGanadores;
+
+                    // Gráfica de Proyección
+                    var graficaProyeccion = "<div class='graph-container'><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_proyeccion/proyeccion_" + seccion + ".png'><div class='description'><p><strong>Explicación Proyección:</strong> Este gráfico presenta la proyección futura de la participación electoral en la sección, basada en los resultados anteriores.</p></div></div>";
+                    container.innerHTML += graficaProyeccion;
+
+                    // Agregar el contenedor a la ventana modal
+                    graficaContainer.appendChild(container);
+                };
             })
             .catch(error => {
                 console.error('Error al cargar el GeoJSON:', error);
             });
-
-        // Función para mostrar la gráfica de historial y su explicación en dos columnas
-window.showGraphs = function (seccion) {
-    var graficaContainer = document.getElementById("grafica-container");
-
-    // Limpiar el contenedor de las gráficas
-    graficaContainer.innerHTML = "";
-
-    // Crear un contenedor de dos columnas usando flexbox
-    var container = document.createElement("div");
-    container.style.display = "flex";
-    container.style.alignItems = "center";  // Centra verticalmente los elementos
-    container.style.justifyContent = "space-between"; // Separa los elementos con espacio entre ellos
-
-    // Agregar la gráfica de Historial (columna izquierda)
-    var graficaHistorial = "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
-
-    // Agregar el texto explicativo de la gráfica de historial (columna derecha)
-    var textoHistorial = "<div style='max-width: 400px;'><p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
-
-    // Agregar la gráfica y el texto al contenedor
-    container.innerHTML = graficaHistorial + textoHistorial;
-
-    // Agregar el contenedor a la ventana modal
-    graficaContainer.appendChild(container);
-};
-
 
         // Cerrar la ventana modal cuando el usuario haga clic en el botón de cierre
         var span = document.getElementsByClassName("close")[0];
@@ -198,6 +177,32 @@ window.showGraphs = function (seccion) {
                 modal.style.display = "none";
             }
         }
+
+        // Función de búsqueda
+        document.getElementById('search-button').addEventListener('click', function() {
+            var searchTerm = document.getElementById('search-input').value; // Número de sección
+
+            // Buscar la sección en los datos del GeoJSON
+            var foundFeature = null;
+            geoJsonLayer.eachLayer(function(layer) {
+                if (layer.feature.properties.SECCION == searchTerm) {
+                    foundFeature = layer;
+                }
+            });
+
+            if (foundFeature) {
+                // Resaltar el polígono
+                foundFeature.setStyle({ color: 'red', weight: 5, fillColor: '#f03', fillOpacity: 0.3 });
+
+                // Hacer zoom en el polígono
+                map.setView(foundFeature.getBounds().getCenter(), 14);
+
+                // Mostrar popup
+                foundFeature.openPopup();
+            } else {
+                alert('No se encontró la sección con el número ' + searchTerm);
+            }
+        });
     </script>
 </body>
 </html>
