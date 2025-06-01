@@ -8,29 +8,21 @@
     <!-- Agregar el CSS del plugin de búsqueda -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
     <style>
-        #map { height: 70vh; }
-        #tabla-datos { margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+        #map { height: 100vh; } /* El mapa ocupa toda la altura */
+        .search-container { padding: 10px; background-color: white; }
+        input[type="text"] { padding: 5px; width: 200px; }
     </style>
 </head>
 <body>
-    <div id="map"></div>
-    <div id="tabla-datos">
-        <table>
-            <thead>
-                <tr>
-                    <th>Sección</th>
-                    <th>Distrito Federal</th>
-                    <th>Distrito Local</th>
-                    <th>Gráfica de Historial</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-body">
-                <!-- Las filas de la tabla se agregarán dinámicamente aquí -->
-            </tbody>
-        </table>
+    <!-- Contenedor de búsqueda -->
+    <div class="search-container">
+        <label for="search-input">Buscar Sección:</label>
+        <input type="text" id="search-input" placeholder="Escribe un número de sección">
+        <button id="search-button">Buscar</button>
     </div>
+
+    <div id="map"></div>
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
     <script>
@@ -46,7 +38,7 @@
             .then(response => response.json())
             .then(data => {
                 // Crear la capa GeoJSON
-                L.geoJSON(data, {
+                var geoJsonLayer = L.geoJSON(data, {
                     onEachFeature: function (feature, layer) {
                         if (feature.properties) {
                             var popupContent = "<b>Distrito Federal: </b>" + feature.properties.DISTRITO_F + "<br>" +
@@ -56,34 +48,35 @@
                                                "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + feature.properties.SECCION + ".png' width='300'>";
                                                
                             layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
-
-                            // Agregar datos a la tabla HTML
-                            var tablaBody = document.getElementById('tabla-body');
-                            var fila = document.createElement('tr');
-                            fila.innerHTML = "<td>" + feature.properties.SECCION + "</td>" +
-                                             "<td>" + feature.properties.DISTRITO_F + "</td>" +
-                                             "<td>" + feature.properties.DISTRITO_L + "</td>" +
-                                             "<td><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + feature.properties.SECCION + ".png' width='100'></td>";
-                            tablaBody.appendChild(fila);
                         }
                     }
                 }).addTo(map);
 
-                // Agregar el plugin de búsqueda
-                var searchControl = new L.Control.Search({
-                    layer: geoJsonLayer, // La capa donde buscar
-                    propertyName: 'SECCION', // El atributo que quieres buscar
-                    marker: false, // Desactivar el marcador en los resultados de búsqueda
-                    moveToLocation: function(latlng, title, map) {
-                        map.setView(latlng, 14); // Hacer zoom en el polígono
-                        var circle = L.circle(latlng, { radius: 50 }).addTo(map);
-                        circle.setStyle({ color: 'red', fillColor: '#f03', fillOpacity: 0.3 });
-                        setTimeout(function () {
-                            map.removeLayer(circle);
-                        }, 3000);
+                // Función para buscar y resaltar el polígono
+                document.getElementById('search-button').addEventListener('click', function() {
+                    var searchTerm = document.getElementById('search-input').value; // Número de sección
+
+                    // Buscar la sección en los datos del GeoJSON
+                    var foundFeature = null;
+                    geoJsonLayer.eachLayer(function(layer) {
+                        if (layer.feature.properties.SECCION == searchTerm) {
+                            foundFeature = layer;
+                        }
+                    });
+
+                    if (foundFeature) {
+                        // Resaltar el polígono
+                        foundFeature.setStyle({ color: 'red', weight: 5, fillColor: '#f03', fillOpacity: 0.3 });
+
+                        // Hacer zoom en el polígono
+                        map.setView(foundFeature.getBounds().getCenter(), 14);
+
+                        // Mostrar popup
+                        foundFeature.openPopup();
+                    } else {
+                        alert('No se encontró la sección con el número ' + searchTerm);
                     }
                 });
-                map.addControl(searchControl);
             })
             .catch(error => {
                 console.error('Error al cargar el GeoJSON:', error);
