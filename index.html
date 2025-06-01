@@ -8,48 +8,63 @@
     <!-- Agregar el CSS del plugin de búsqueda -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
     <style>
-        #map { height: 100vh; }
+        #map { height: 70vh; }
+        #tabla-datos { margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div id="tabla-datos">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sección</th>
+                    <th>Distrito Federal</th>
+                    <th>Distrito Local</th>
+                    <th>Gráfica de Historial</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+                <!-- Las filas de la tabla se agregarán dinámicamente aquí -->
+            </tbody>
+        </table>
+    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Agregar el JS del plugin de búsqueda -->
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
     <script>
-        // Crear el mapa con Leaflet y centrarlo en las coordenadas de Irapuato
-        var map = L.map('map').setView([20.6726921091957, -101.34689884282602], 13); // Coordenadas de Irapuato
+        var map = L.map('map').setView([20.7032, -101.1916], 13); // Coordenadas de Irapuato
 
         // Capa base de OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-		
-		// Cargar el archivo GeoJSON de Etiquetas desde GitHub
-		fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Etiquetas.geojson')
-			.then(response => response.json())
-			.then(data => {
-        // El código para agregar la capa GeoJSON al mapa sigue igual
-		})
-			.catch(error => {
-			console.error('Error al cargar el GeoJSON:', error);
-    });
-	
-	
+
         // Cargar el archivo GeoJSON desde GitHub
         fetch('https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/AT_Irapuato.geojson')
-            .then(response => response.json())  // Convertir a formato JSON
+            .then(response => response.json())
             .then(data => {
                 // Crear la capa GeoJSON
-                var geoJsonLayer = L.geoJSON(data, {
+                L.geoJSON(data, {
                     onEachFeature: function (feature, layer) {
-                        // Verificar si la característica tiene propiedades
                         if (feature.properties) {
-                            // Mostrar datos de los atributos en el popup
                             var popupContent = "<b>Distrito Federal: </b>" + feature.properties.DISTRITO_F + "<br>" +
                                                "<b>Distrito Local: </b>" + feature.properties.DISTRITO_L + "<br>" +
-                                               "<b>Sección: </b>" + feature.properties.SECCION;
+                                               "<b>Sección: </b>" + feature.properties.SECCION + "<br>" +
+                                               "<b>Gráfica de Historial:</b><br>" +
+                                               "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + feature.properties.SECCION + ".png' width='300'>";
+                                               
                             layer.bindPopup(popupContent); // Enlazar la ventana emergente con los datos
+
+                            // Agregar datos a la tabla HTML
+                            var tablaBody = document.getElementById('tabla-body');
+                            var fila = document.createElement('tr');
+                            fila.innerHTML = "<td>" + feature.properties.SECCION + "</td>" +
+                                             "<td>" + feature.properties.DISTRITO_F + "</td>" +
+                                             "<td>" + feature.properties.DISTRITO_L + "</td>" +
+                                             "<td><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + feature.properties.SECCION + ".png' width='100'></td>";
+                            tablaBody.appendChild(fila);
                         }
                     }
                 }).addTo(map);
@@ -60,17 +75,14 @@
                     propertyName: 'SECCION', // El atributo que quieres buscar
                     marker: false, // Desactivar el marcador en los resultados de búsqueda
                     moveToLocation: function(latlng, title, map) {
-                        // Cuando se encuentra la sección, hacer zoom en ella y resaltar el polígono
                         map.setView(latlng, 14); // Hacer zoom en el polígono
-                        var circle = L.circle(latlng, { radius: 50 }).addTo(map); // Crear un círculo alrededor del polígono encontrado
-                        circle.setStyle({ color: 'red', fillColor: '#f03', fillOpacity: 0.3 }); // Resaltar con color rojo
+                        var circle = L.circle(latlng, { radius: 50 }).addTo(map);
+                        circle.setStyle({ color: 'red', fillColor: '#f03', fillOpacity: 0.3 });
                         setTimeout(function () {
-                            map.removeLayer(circle); // Eliminar el círculo después de 3 segundos
+                            map.removeLayer(circle);
                         }, 3000);
                     }
                 });
-
-                // Añadir el control de búsqueda al mapa
                 map.addControl(searchControl);
             })
             .catch(error => {
