@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Interactivo con Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Agregar el CSS del plugin de búsqueda -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
     <style>
-        #map { height: 100vh; } /* El mapa ocupa toda la altura */
+        #map { height: 100vh; z-index: 0; } /* El mapa ocupa toda la altura */
         .search-container { padding: 10px; background-color: white; }
         input[type="text"] { padding: 5px; width: 200px; }
         button { padding: 5px 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
@@ -18,7 +17,7 @@
         .modal {
             display: none; /* Oculta la ventana modal por defecto */
             position: fixed;
-            z-index: 1;
+            z-index: 1000; /* Asegura que la ventana modal esté por encima del mapa */
             left: 0;
             top: 0;
             width: 100%;
