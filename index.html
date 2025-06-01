@@ -119,9 +119,7 @@
                                                  "<td>" + feature.properties.DISTRITO_L + "</td>";
                                 tablaBody.appendChild(fila);
 
-                                // Agregar un enlace para mostrar la gráfica de historial
-                                var graficaContainer = document.getElementById("grafica-container");
-                                graficaContainer.innerHTML = "<br><button onclick='showGraph(\"" + feature.properties.SECCION + "\")'>Mostrar Gráfica Historial</button>";
+
 
                                 // Función para mostrar la gráfica al hacer clic en el botón
                                 window.showGraph = function (seccion) {
