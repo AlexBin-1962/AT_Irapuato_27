@@ -75,8 +75,6 @@
                         <th>Sección</th>
                         <th>Distrito Federal</th>
                         <th>Distrito Local</th>
-                        <th>Gráfica Historial</th>
-                        <th>Gráfica Participación</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-body">
@@ -118,9 +116,7 @@
                                 var fila = document.createElement('tr');
                                 fila.innerHTML = "<td>" + feature.properties.SECCION + "</td>" +
                                                  "<td>" + feature.properties.DISTRITO_F + "</td>" +
-                                                 "<td>" + feature.properties.DISTRITO_L + "</td>" +
-                                                 "<td><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + feature.properties.SECCION + ".png' width='100'></td>" +
-                                                 "<td><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_participacion/participacion_" + feature.properties.SECCION + ".png' width='100'></td>";
+                                                 "<td>" + feature.properties.DISTRITO_L + "</td>";
                                 tablaBody.appendChild(fila);
 
                                 // Agregar un enlace para mostrar la gráfica de historial
