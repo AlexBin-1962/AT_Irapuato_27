@@ -157,43 +157,43 @@
                 console.error('Error al cargar el GeoJSON:', error);
             });
 
-        // Función para mostrar la gráfica de historial y su explicación en dos columnas
+        // Función para mostrar las 4 gráficas y sus explicaciones en dos columnas
 window.showGraphs = function (seccion) {
     var graficaContainer = document.getElementById("grafica-container");
 
     // Limpiar el contenedor de las gráficas
     graficaContainer.innerHTML = "";
 
-    // Crear un contenedor de dos columnas usando flexbox
+    // Crear un contenedor general para las 4 gráficas y sus explicaciones
     var container = document.createElement("div");
-    container.style.display = "flex";
-    container.style.alignItems = "center";  // Centra verticalmente los elementos
-    container.style.justifyContent = "space-between"; // Separa los elementos con espacio entre ellos
+    container.style.display = "grid";
+    container.style.gridTemplateColumns = "1fr 1fr"; // Dos columnas
+    container.style.gap = "20px"; // Espacio entre las columnas
 
-    // Agregar la gráfica de Historial (columna izquierda)
-    var graficaHistorial = "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
+    // Gráfica de Historial
+    var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
+    var textoHistorial = "<p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
+    container.innerHTML += graficaHistorial + textoHistorial;
 
-    // Agregar el texto explicativo de la gráfica de historial (columna derecha)
-    var textoHistorial = "<div style='max-width: 400px;'><p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
+    // Gráfica de Competencia
+    var graficaCompetencia = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_competencia/competencia_" + seccion + ".png' width='300'><br>";
+    var textoCompetencia = "<p><strong>Explicación Competencia:</strong> Este gráfico compara la competencia entre los partidos en la sección seleccionada durante las últimas tres elecciones.</p></div>";
+    container.innerHTML += graficaCompetencia + textoCompetencia;
 
-    // Agregar la gráfica y el texto al contenedor
-    container.innerHTML = graficaHistorial + textoHistorial;
+    // Gráfica de Ganadores
+    var graficaGanadores = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_ganadores/ganadores_" + seccion + ".png' width='300'><br>";
+    var textoGanadores = "<p><strong>Explicación Ganadores:</strong> Este gráfico muestra los ganadores de cada elección en las distintas secciones a través de las elecciones de 2018, 2021 y 2024.</p></div>";
+    container.innerHTML += graficaGanadores + textoGanadores;
 
-    // Agregar el contenedor a la ventana modal
-    graficaContainer.appendChild(container);
+    // Gráfica de Proyección
+    var graficaProyeccion = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_proyeccion/proyeccion_" + seccion + ".png' width='300'><br>";
+    var textoProyeccion = "<p><strong>Explicación Proyección:</strong> Este gráfico presenta la proyección futura de la participación electoral en la sección, basada en los resultados anteriores.</p></div>";
+    container.innerHTML += graficaProyeccion + textoProyeccion;
 
-     // Agregar la gráfica de Competencia (columna izquierda)
-    var graficaCompetencia = "<img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_competencia/competencia_" + seccion + ".png' width='300'><br>";
-
-    // Agregar el texto explicativo de la gráfica de Competencia (columna derecha)
-    var textoCompetencia = "<div style='max-width: 400px;'><p><strong>Explicación Competencia:</strong> Este gráfico compara la competencia entre los partidos en la sección seleccionada durante las últimas tres elecciones.</p></div>";
-
-    // Agregar la gráfica y el texto al contenedor
-    container.innerHTML = graficaCompetencia + textoCompetencia;
-
-    // Agregar el contenedor a la ventana modal
+    // Agregar el contenedor con las 4 gráficas y explicaciones a la ventana modal
     graficaContainer.appendChild(container);
 };
+
 
 
         // Cerrar la ventana modal cuando el usuario haga clic en el botón de cierre
