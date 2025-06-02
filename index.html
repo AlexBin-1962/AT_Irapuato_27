@@ -176,7 +176,7 @@ window.showGraphs = function (seccion) {
     tabla += "<tbody><tr><td style='padding: 8px; text-align: center;'>" + seccion + "</td>";
     tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.DISTRITO_F + "</td>";
     tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.DISTRITO_L + "</td>";
-    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties['24P_LN'] + "</td>";
+    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.24P_LN] + "</td>";
     tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.CASILLAS + "</td></tr>";
     tabla += "</tbody></table>";
 
@@ -184,7 +184,7 @@ window.showGraphs = function (seccion) {
     container.innerHTML += tabla;
 
     // Gráfica de Historial
-    var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
+    var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
     var textoHistorial = "<p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
     container.innerHTML += graficaHistorial + textoHistorial;
 
