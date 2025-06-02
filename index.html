@@ -164,6 +164,22 @@ window.showGraphs = function (seccion) {
     container.style.gridTemplateColumns = "1fr 1fr"; // Dos columnas
     container.style.gap = "20px"; // Espacio entre las columnas
 
+    var tabla = "<table style='width: 100%; border: 1px solid #ddd; border-collapse: collapse;'>";
+    tabla += "<thead><tr><th style='padding: 8px; background-color: #f2f2f2;'>Sección</th>" +
+             "<th style='padding: 8px; background-color: #f2f2f2;'>Distrito Federal</th>" +
+             "<th style='padding: 8px; background-color: #f2f2f2;'>Distrito Local</th>" +
+             "<th style='padding: 8px; background-color: #f2f2f2;'>Lista Nominal</th>" +
+             "<th style='padding: 8px; background-color: #f2f2f2;'>Casillas</th></tr></thead>";
+    tabla += "<tbody><tr><td style='padding: 8px; text-align: center;'>" + seccion + "</td>" +
+             "<td style='padding: 8px; text-align: center;'>" + (featureProperties.DISTRITO_F || 'No disponible') + "</td>" +
+             "<td style='padding: 8px; text-align: center;'>" + (featureProperties.DISTRITO_L || 'No disponible') + "</td>" +
+             "<td style='padding: 8px; text-align: center;'>" + (featureProperties['24P_LN'] || 'No disponible') + "</td>" +
+             "<td style='padding: 8px; text-align: center;'>" + (featureProperties['CASILLAS'] || 'No disponible') + "</td></tr>";
+    tabla += "</tbody></table>";
+
+    // Agregar la tabla al contenedor
+    container.innerHTML += tabla;
+
     // Gráfica de Historial
     var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
     var textoHistorial = "<p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
