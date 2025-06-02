@@ -157,7 +157,7 @@
                 console.error('Error al cargar el GeoJSON:', error);
             });
 
-        // Función para mostrar las 4 gráficas y sus explicaciones en dos columnas
+ // Función para mostrar las 4 gráficas y sus explicaciones en dos columnas
 window.showGraphs = function (seccion) {
     var graficaContainer = document.getElementById("grafica-container");
 
@@ -170,14 +170,27 @@ window.showGraphs = function (seccion) {
     container.style.gridTemplateColumns = "1fr 1fr"; // Dos columnas
     container.style.gap = "20px"; // Espacio entre las columnas
 
+    // **Crear la tabla para mostrar los datos**
+    var tabla = "<table style='width: 100%; border: 1px solid #ddd; border-collapse: collapse;'>";
+    tabla += "<thead><tr><th style='padding: 8px; background-color: #f2f2f2;'>Sección</th><th style='padding: 8px; background-color: #f2f2f2;'>Distrito Federal</th><th style='padding: 8px; background-color: #f2f2f2;'>Distrito Local</th><th style='padding: 8px; background-color: #f2f2f2;'>Lista Nominal</th><th style='padding: 8px; background-color: #f2f2f2;'>Casillas</th></tr></thead>";
+    tabla += "<tbody><tr><td style='padding: 8px; text-align: center;'>" + seccion + "</td>";
+    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.DISTRITO_F + "</td>";
+    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.DISTRITO_L + "</td>";
+    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties['24P_LN'] + "</td>";
+    tabla += "<td style='padding: 8px; text-align: center;'>" + feature.properties.CASILLAS + "</td></tr>";
+    tabla += "</tbody></table>";
+
+    // Agregar la tabla al contenedor
+    container.innerHTML += tabla;
+
     // Gráfica de Historial
-    var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
+    var graficaHistorial = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/graficas/graficas_historial/historial_" + seccion + ".png' width='300'><br>";
     var textoHistorial = "<p><strong>Explicación Historial:</strong> Este gráfico muestra los resultados de las elecciones de los tres principales partidos: PAN, PRI y MORENA en las elecciones de 2018, 2021 y 2024.</p></div>";
     container.innerHTML += graficaHistorial + textoHistorial;
 
     // Gráfica de Competencia
     var graficaCompetencia = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_competencia/competencia_" + seccion + ".png' width='300'><br>";
-    var textoCompetencia = "<p><strong>Explicación Competencia:</strong> La competitividad electoral refleja lo parejo de la contienda: si la diferencia de votos entre el primer y segundo lugar fue pequeña en una sección, decimos que hubo alta competencia allí..</p></div>";
+    var textoCompetencia = "<p><strong>Explicación Competencia:</strong> Este gráfico compara la competencia entre los partidos en la sección seleccionada durante las últimas tres elecciones.</p></div>";
     container.innerHTML += graficaCompetencia + textoCompetencia;
 
     // Gráfica de Ganadores
@@ -187,14 +200,12 @@ window.showGraphs = function (seccion) {
 
     // Gráfica de Proyección
     var graficaProyeccion = "<div><img src='https://raw.githubusercontent.com/AlexBin-1962/AT_Irapuato_27/main/Carpetas/graficas_proyeccion/proyeccion_" + seccion + ".png' width='300'><br>";
-    var textoProyeccion = "<p><strong>Explicación Proyección:</strong> Este gráfico presenta la proyección futura de la participación electoral y Votos obtenidos en la sección, basada en los resultados de las tres elecciones anteriores.</p></div>";
+    var textoProyeccion = "<p><strong>Explicación Proyección:</strong> Este gráfico presenta la proyección futura de la participación electoral en la sección, basada en los resultados anteriores.</p></div>";
     container.innerHTML += graficaProyeccion + textoProyeccion;
 
     // Agregar el contenedor con las 4 gráficas y explicaciones a la ventana modal
     graficaContainer.appendChild(container);
 };
-
-
 
         // Cerrar la ventana modal cuando el usuario haga clic en el botón de cierre
         var span = document.getElementsByClassName("close")[0];
