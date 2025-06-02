@@ -112,13 +112,7 @@
                                 modal.style.display = "block"; // Mostrar la ventana modal
 
                                 // Agregar los datos a la tabla
-                                var tablaBody = document.getElementById('tabla-body');
-                                var fila = document.createElement('tr');
-                                fila.innerHTML = "<td>" + feature.properties.SECCION + "</td>" +
-                                                 "<td>" + feature.properties.DISTRITO_F + "</td>" +
-                                                 "<td>" + feature.properties.DISTRITO_L + "</td>";
-                                tablaBody.appendChild(fila);
-
+                               
                                 // Agregar un enlace para mostrar las gráficas
                                 var graficaContainer = document.getElementById("grafica-container");
                                 graficaContainer.innerHTML = "<br><button onclick='showGraphs(\"" + feature.properties.SECCION + "\")'>Mostrar Gráficas</button>";
